@@ -22,7 +22,7 @@ public class UsersEntity {
     private Integer userId;
     @Column(name = "user_pwd")
     private String password;
-    @Column(name = "user_email")
+    @Column(name = "user_address")
     private String email;
     @Column(name = "created_at")
     private LocalDateTime createdAt;
