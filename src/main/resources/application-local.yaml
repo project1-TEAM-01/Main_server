@@ -1,0 +1,9 @@
+server:
+  port: 8090
+
+logging:
+  config: classpath:logback-spring-local.xml
+  level:
+    org:
+      hibernate:
+        SQL: DEBUG

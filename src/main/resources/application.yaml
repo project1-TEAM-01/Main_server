@@ -1,0 +1,13 @@
+server:
+  port: 8090
+spring:
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    database: H2
+    generate-ddl: false
+    open-in-view: false
+    defer-datasource-initialization: true
+    show-sql: true
