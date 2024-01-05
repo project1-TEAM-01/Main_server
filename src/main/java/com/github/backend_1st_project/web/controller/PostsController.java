@@ -1,5 +1,6 @@
 package com.github.backend_1st_project.web.controller;
 
+import com.github.backend_1st_project.models.ResponseModel;
 import com.github.backend_1st_project.service.PostService;
 import com.github.backend_1st_project.web.dto.ResultResponse;
 import com.github.backend_1st_project.web.dto.posts.PostBody;
@@ -41,23 +42,23 @@ public class PostsController {
 
     @ApiOperation(value="게시판 글 추가", notes="게시판 글을 추가한다.")
     @PostMapping("")
-    public String registerPost(@RequestBody PostBody body){
+    public ResponseModel registerPost(@RequestBody PostBody body){
         String posts = postService.savePost(body);
-        return posts;
+        return new ResponseModel(posts);
     }
 
     @ApiOperation(value="게시판 글 수정", notes="게시판 글을 수정한다.")
     @PutMapping("/{postId}")
-    public String updatePost(@PathVariable("postId") Integer postId, @RequestBody PostBody postBody){
+    public ResponseModel updatePost(@PathVariable("postId") Integer postId, @RequestBody PostBody postBody){
         String result = postService.updatePosts(postId, postBody);
-        return result;
+        return new ResponseModel(result);
     }
 
     @ApiOperation(value="게시판 글 삭제", notes="유저가 쓴 게시판을 삭제한다.")
     @DeleteMapping("/{postId}")
-    public String deleteItemByPathId(@PathVariable("postId") Integer postId){
+    public ResponseModel deleteItemByPathId(@PathVariable("postId") Integer postId){
         String result = postService.deletePosts(postId);
-        return result;
+        return new ResponseModel(result);
     }
 
 }

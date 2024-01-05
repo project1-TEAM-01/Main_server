@@ -1,5 +1,6 @@
 package com.github.backend_1st_project.web.controller;
 
+import com.github.backend_1st_project.models.ResponseModel;
 import com.github.backend_1st_project.service.CommentService;
 import com.github.backend_1st_project.web.dto.ResultResponse;
 import com.github.backend_1st_project.web.dto.comments.CommentBody;
@@ -30,22 +31,22 @@ public class CommentsController {
 
     @ApiOperation(value="댓글 추가", notes="게시판의 댓글을 추가한다.")
     @PostMapping("/comments")
-    public String registerComment(@RequestBody CommentBody body){
+    public ResponseModel registerComment(@RequestBody CommentBody body){
         String result = commentService.saveComment(body);
-        return result;
+        return new ResponseModel(result);
     }
 
     @ApiOperation(value="댓글 수정", notes="게시판의 댓글을 수정한다.")
     @PutMapping("/comments/{commentId}")
-    public String updateComment(@PathVariable("commentId") Integer commentId, @RequestBody CommentBody body){
+    public ResponseModel updateComment(@PathVariable("commentId") Integer commentId, @RequestBody CommentBody body){
         String result = commentService.updateComment(commentId, body);
-        return result;
+        return new ResponseModel(result);
     }
 
     @ApiOperation(value="댓글 삭제", notes="게시판의 댓글을 삭제한다.")
     @DeleteMapping("/comments/{commentId}")
-    public String updateComment(@PathVariable("commentId") Integer commentId){
+    public ResponseModel updateComment(@PathVariable("commentId") Integer commentId){
         String result = commentService.deleteComment(commentId);
-        return result;
+        return new ResponseModel(result);
     }
 }
