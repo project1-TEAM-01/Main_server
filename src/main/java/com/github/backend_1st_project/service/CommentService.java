@@ -2,12 +2,14 @@ package com.github.backend_1st_project.service;
 
 import com.github.backend_1st_project.repository.comments.CommentsJpaRepository;
 import com.github.backend_1st_project.repository.posts.PostsJpaRepository;
+import com.github.backend_1st_project.repository.users.UsersJpaRepository;
 import com.github.backend_1st_project.service.exception.NotFoundException;
 import com.github.backend_1st_project.service.mapper.CommentMapper;
 import com.github.backend_1st_project.web.dto.comments.CommentBody;
 import com.github.backend_1st_project.web.dto.comments.CommentDTO;
-import com.github.backend_1st_project.web.dto.entity.CommentEntity;
-import com.github.backend_1st_project.web.dto.entity.PostEntity;
+import com.github.backend_1st_project.web.entity.CommentEntity;
+import com.github.backend_1st_project.web.entity.PostEntity;
+import com.github.backend_1st_project.web.entity.UserEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +22,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class CommentService {
     private final CommentsJpaRepository commentsJpaRepository;
+    private final UsersJpaRepository usersJpaRepository;
+    private final PostsJpaRepository postsJpaRepository;
     public List<CommentDTO> findPostByComments(Integer postId) {
         List<CommentEntity> comments = commentsJpaRepository.findByPostId(postId);
         if(comments.isEmpty())
@@ -30,7 +34,13 @@ public class CommentService {
 
     @Transactional
     public String saveComment(CommentBody body){
-        CommentEntity comments = new CommentEntity(null, body.getPostId(),  body.getUserId(), body.getContent(), LocalDateTime.now(), LocalDateTime.now());
+        UserEntity user = usersJpaRepository.findByUserEmail(body.getAuthor());
+        PostEntity post = postsJpaRepository.findByPostId(body.getPostId());
+        if(user == null)
+            throw new NotFoundException("존재하지 않은 유저입니다.");
+        else if(post == null)
+            throw new NotFoundException("존재하지 않은 게시물입니다.");
+        CommentEntity comments = new CommentEntity(body.getContent(), post, user, LocalDateTime.now(), LocalDateTime.now());
         commentsJpaRepository.save(comments);
         return "댓글이 성공적으로 작성되었습니다.";
     }

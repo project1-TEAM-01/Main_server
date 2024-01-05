@@ -1,6 +1,6 @@
 package com.github.backend_1st_project.service.mapper;
 
-import com.github.backend_1st_project.web.dto.entity.PostEntity;
+import com.github.backend_1st_project.web.entity.PostEntity;
 import com.github.backend_1st_project.web.dto.posts.PostsDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -13,10 +13,9 @@ public interface PostMapper {
 
     @Mapping(target = "postId", source = "postId")
     @Mapping(target = "title", source = "title")
-    @Mapping(target = "userId", source = "userId")
+    @Mapping(target = "author", source = "user.userEmail")
     @Mapping(target = "viewCount", source = "viewCount")
     @Mapping(target = "likeCount", source = "likeCount")
     @Mapping(target = "createdAt", source = "createdAt")
-    @Mapping(target = "updatedAt", source = "updatedAt")
     PostsDTO entityToDTO(PostEntity postEntity);
 }

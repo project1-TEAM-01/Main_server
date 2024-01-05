@@ -1,6 +1,6 @@
 package com.github.backend_1st_project.service.mapper;
 
-import com.github.backend_1st_project.web.dto.entity.UserEntity;
+import com.github.backend_1st_project.web.entity.UserEntity;
 import com.github.backend_1st_project.web.dto.users.UsersDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -16,11 +16,8 @@ public interface UserMapper {
     UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
 
     //메소드 (DTO, Entity)
-    @Mapping(target = "userId", source = "userId")
-    @Mapping(target = "userName", source = "userName")
-    @Mapping(target = "userAddress", source = "userAddress")
+    @Mapping(target = "email", source = "userEmail")
     @Mapping(target = "createdAt", source = "createdAt")
-    @Mapping(target = "updatedAt", source = "updatedAt")
     UsersDTO entityToDTO(UserEntity userEntity);
 
     @Named("convert")
