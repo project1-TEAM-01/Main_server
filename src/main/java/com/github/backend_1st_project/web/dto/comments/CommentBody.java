@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class CommentBody {
-    private Integer postId;
-    private String userId;
     private String content;
+    private String author;
+    private Integer postId;
 }

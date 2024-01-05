@@ -1,6 +1,6 @@
 package com.github.backend_1st_project.service;
 
-import com.github.backend_1st_project.web.dto.entity.UserEntity;
+import com.github.backend_1st_project.web.entity.UserEntity;
 import com.github.backend_1st_project.repository.users.UsersJpaRepository;
 import com.github.backend_1st_project.service.exception.NotFoundException;
 import com.github.backend_1st_project.service.mapper.UserMapper;
@@ -19,10 +19,10 @@ public class UserService {
 
     private final UsersJpaRepository usersJpaRepository;
 
-    public List<UsersDTO> findByUser(String userId) {
-        List<UserEntity> userEntity = usersJpaRepository.findByUserId(userId);
+    public List<UsersDTO> findByUser(String userEmail) {
+        List<UserEntity> userEntity = usersJpaRepository.findByEmail(userEmail);
         if(userEntity.isEmpty())
-            throw new NotFoundException("해당 ID: " + userId + "를 찾을 수 없습니다.");
+            throw new NotFoundException("해당 ID: " + userEmail + "를 찾을 수 없습니다.");
         List<UsersDTO> userDto = userEntity.stream().map(UserMapper.INSTANCE::entityToDTO).collect(Collectors.toList());
         return userDto;
     }
@@ -34,7 +34,11 @@ public class UserService {
     }
 
     public String saveUser(RequestUser userBody) {
-//        UserEntity user = UserMapper.INSTANCE.entityToDTO()
+        UserEntity userEntity = usersJpaRepository.findByUserEmail(userBody.getUserEmail());
+        if(userEntity != null)
+            throw new NotFoundException("해당 ID: " + userEntity.getUserEmail() + "는 이미 존재합니다.");
+
+
         return "회원가입이 완료되었습니다.";
     }
 }

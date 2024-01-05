@@ -34,8 +34,8 @@ public class PostsController {
 
     @ApiOperation(value="유저가 쓴 게시판 정보 조회", notes="유저가 쓴 게시판 정보조회")
     @GetMapping("/search")
-    public List<PostsDTO> findPostsById(@RequestParam("author_email") String userId){
-        List<PostsDTO> posts = postService.findPostById(userId);
+    public List<PostsDTO> findPostsById(@RequestParam("author_email") String userEmail){
+        List<PostsDTO> posts = postService.findPostById(userEmail);
         return posts;
     }
 

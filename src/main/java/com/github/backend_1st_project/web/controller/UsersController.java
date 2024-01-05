@@ -22,7 +22,6 @@ public class UsersController {
 
     private final UserService userService;
 
-
     @PostMapping("/signup")
     @ApiOperation(value="유저 등록", notes="유저 정보를 등록")
     public String registerUser(@RequestBody RequestUser userBody){
@@ -36,11 +35,11 @@ public class UsersController {
         return new ResultResponse(users);
     }
 
-    @GetMapping("/users/{userId}")
+    @GetMapping("/users/{userEmail}")
     @ApiOperation(value="유저 정보 조회", notes="특정 유저 정보를 조회")
-    @ApiImplicitParam(name = "userId", value = "현재 등록된 유저 id")
-    public ResultResponse findByUserId(@PathVariable String userId){
-        List<UsersDTO> users = userService.findByUser(userId);
+    @ApiImplicitParam(name = "userEmail", value = "현재 등록된 유저 id")
+    public ResultResponse findByUserId(@PathVariable String userEmail){
+        List<UsersDTO> users = userService.findByUser(userEmail);
         return new ResultResponse(users);
     }
 
