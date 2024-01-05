@@ -1,7 +1,7 @@
 package com.github.backend_1st_project.service.mapper;
 
 import com.github.backend_1st_project.web.dto.entity.UserEntity;
-import com.github.backend_1st_project.web.dto.users.UsersDTO;
+
 import java.time.format.DateTimeFormatter;
 import javax.annotation.processing.Generated;
 

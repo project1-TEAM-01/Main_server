@@ -1,5 +1,6 @@
-package com.github.backend_1st_project.web.dto.entity;
+package com.github.backend_1st_project.repository.posts;
 
+import com.github.backend_1st_project.web.dto.entity.TimeEntity;
 import com.github.backend_1st_project.web.dto.posts.PostBody;
 import lombok.*;
 

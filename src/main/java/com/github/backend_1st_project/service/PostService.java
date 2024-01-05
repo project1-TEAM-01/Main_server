@@ -2,22 +2,16 @@ package com.github.backend_1st_project.service;
 
 import com.github.backend_1st_project.repository.users.UsersJpaRepository;
 import com.github.backend_1st_project.service.exception.NotFoundException;
-import com.github.backend_1st_project.web.dto.entity.PostEntity;
+import com.github.backend_1st_project.repository.posts.PostEntity;
 import com.github.backend_1st_project.repository.posts.PostsJpaRepository;
 import com.github.backend_1st_project.service.mapper.PostMapper;
 import com.github.backend_1st_project.web.dto.entity.UserEntity;
 import com.github.backend_1st_project.web.dto.posts.PostBody;
 import com.github.backend_1st_project.web.dto.posts.PostsDTO;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceContextType;
-import javax.persistence.PersistenceContexts;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;

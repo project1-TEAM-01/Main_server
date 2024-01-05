@@ -1,7 +1,6 @@
 package com.github.backend_1st_project.service.mapper;
 
 import com.github.backend_1st_project.web.dto.entity.UserEntity;
-import com.github.backend_1st_project.web.dto.users.UsersDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;

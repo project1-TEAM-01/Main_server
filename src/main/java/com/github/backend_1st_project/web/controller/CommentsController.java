@@ -1,10 +1,8 @@
 package com.github.backend_1st_project.web.controller;
 
 import com.github.backend_1st_project.service.CommentService;
-import com.github.backend_1st_project.web.dto.ResultResponse;
 import com.github.backend_1st_project.web.dto.comments.CommentBody;
 import com.github.backend_1st_project.web.dto.comments.CommentDTO;
-import com.github.backend_1st_project.web.dto.posts.PostBody;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;

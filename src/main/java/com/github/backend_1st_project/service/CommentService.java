@@ -1,13 +1,11 @@
 package com.github.backend_1st_project.service;
 
 import com.github.backend_1st_project.repository.comments.CommentsJpaRepository;
-import com.github.backend_1st_project.repository.posts.PostsJpaRepository;
 import com.github.backend_1st_project.service.exception.NotFoundException;
 import com.github.backend_1st_project.service.mapper.CommentMapper;
 import com.github.backend_1st_project.web.dto.comments.CommentBody;
 import com.github.backend_1st_project.web.dto.comments.CommentDTO;
-import com.github.backend_1st_project.web.dto.entity.CommentEntity;
-import com.github.backend_1st_project.web.dto.entity.PostEntity;
+import com.github.backend_1st_project.repository.comments.CommentEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

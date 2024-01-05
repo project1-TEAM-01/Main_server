@@ -1,6 +1,6 @@
 package com.github.backend_1st_project.service.mapper;
 
-import com.github.backend_1st_project.web.dto.entity.PostEntity;
+import com.github.backend_1st_project.repository.posts.PostEntity;
 import com.github.backend_1st_project.web.dto.posts.PostsDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

@@ -1,20 +1,15 @@
 package com.github.backend_1st_project.web.controller;
 
 import com.github.backend_1st_project.service.UserService;
-import com.github.backend_1st_project.web.dto.ResultResponse;
 import com.github.backend_1st_project.web.dto.users.LoginDto;
-import com.github.backend_1st_project.web.dto.users.RequestUser;
 import com.github.backend_1st_project.web.dto.users.SignUpDTO;
-import com.github.backend_1st_project.web.dto.users.UsersDTO;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api")

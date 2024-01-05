@@ -1,7 +1,7 @@
 package com.github.backend_1st_project.service.mapper;
 
 import com.github.backend_1st_project.web.dto.comments.CommentDTO;
-import com.github.backend_1st_project.web.dto.entity.CommentEntity;
+import com.github.backend_1st_project.repository.comments.CommentEntity;
 import java.time.format.DateTimeFormatter;
 import javax.annotation.processing.Generated;
 
