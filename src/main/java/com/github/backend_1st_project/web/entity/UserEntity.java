@@ -3,6 +3,7 @@ package com.github.backend_1st_project.web.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Getter
 @Setter
@@ -21,4 +22,6 @@ public class UserEntity extends TimeEntity {
     private String userPwd;
     @Column(name = "user_email", length = 30)
     private String userEmail;
+    @OneToMany(mappedBy = "users")
+    private List<UserRoleEntity> userRoleList;
 }

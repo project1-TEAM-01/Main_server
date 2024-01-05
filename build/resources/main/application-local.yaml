@@ -10,6 +10,9 @@ spring:
     password: 12341234
     driver-class-name: com.mysql.cj.jdbc.Driver
 
+jwt:
+  secret-key-source: secretKeyeiskallgjeosj
+
 logging:
   config: classpath:logback-spring-local.xml
   level:
