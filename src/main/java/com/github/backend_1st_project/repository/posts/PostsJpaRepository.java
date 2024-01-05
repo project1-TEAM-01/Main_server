@@ -10,8 +10,10 @@ import java.util.List;
 @Repository
 public interface PostsJpaRepository extends JpaRepository<PostEntity, Integer> {
 
-    @Query("SELECT c FROM PostEntity c WHERE c.user.userEmail = :userEmail")
-    List<PostEntity> findByUserId(String userEmail);
+    @Query("SELECT c FROM PostEntity c " +
+            "INNER JOIN c.user u " +
+            "WHERE u.userEmail = :userEmail")
+    List<PostEntity> findByUserEmail(String userEmail);
 
     PostEntity findByPostId(Integer postId);
 }

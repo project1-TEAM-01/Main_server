@@ -59,7 +59,7 @@ public class PostService {
     }
 
     public List<PostsDTO> findPostById(String userEmail) {
-        List<PostEntity> posts = postsJpaRepository.findByUserId(userEmail);
+        List<PostEntity> posts = postsJpaRepository.findByUserEmail(userEmail);
         if(posts.isEmpty())
             throw new NotFoundException("해당 Email: " + userEmail + "의 게시물을 찾을 수 없습니다.");
         List<PostsDTO> dto = posts.stream().map(PostMapper.INSTANCE::entityToDTO).collect(Collectors.toList());
