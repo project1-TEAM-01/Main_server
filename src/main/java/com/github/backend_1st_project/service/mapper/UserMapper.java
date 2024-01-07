@@ -1,7 +1,7 @@
 package com.github.backend_1st_project.service.mapper;
 
+import com.github.backend_1st_project.web.dto.users.LoginDTO;
 import com.github.backend_1st_project.web.entity.UserEntity;
-import com.github.backend_1st_project.web.dto.users.UsersDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
@@ -16,9 +16,9 @@ public interface UserMapper {
     UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
 
     //메소드 (DTO, Entity)
-    @Mapping(target = "email", source = "userEmail")
-    @Mapping(target = "createdAt", source = "createdAt")
-    UsersDTO entityToDTO(UserEntity userEntity);
+    @Mapping(target = "email", source = "email")
+    @Mapping(target = "password", source = "password")
+    LoginDTO entityToDTO(UserEntity userEntity);
 
     @Named("convert")
     static String localDateTimeToString(LocalDateTime localDateTime){

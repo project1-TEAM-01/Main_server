@@ -9,7 +9,7 @@ import javax.annotation.processing.Generated;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-01-06T03:05:29+0900",
+    date = "2024-01-07T11:16:59+0900",
     comments = "version: 1.5.3.Final, compiler: IncrementalProcessingEnvironment from gradle-language-java-8.5.jar, environment: Java 17.0.9 (Oracle Corporation)"
 )
 public class CommentMapperImpl implements CommentMapper {
@@ -22,9 +22,10 @@ public class CommentMapperImpl implements CommentMapper {
 
         CommentDTO commentDTO = new CommentDTO();
 
+        commentDTO.setId( commentEntity.getComment_id() );
         commentDTO.setPostId( commentEntityPostPostId( commentEntity ) );
         commentDTO.setContent( commentEntity.getContent() );
-        commentDTO.setAuthor( commentEntityUserUserEmail( commentEntity ) );
+        commentDTO.setAuthor( commentEntityUserEmail( commentEntity ) );
         if ( commentEntity.getCreatedAt() != null ) {
             commentDTO.setCreatedAt( DateTimeFormatter.ISO_LOCAL_DATE_TIME.format( commentEntity.getCreatedAt() ) );
         }
@@ -47,7 +48,7 @@ public class CommentMapperImpl implements CommentMapper {
         return postId;
     }
 
-    private String commentEntityUserUserEmail(CommentEntity commentEntity) {
+    private String commentEntityUserEmail(CommentEntity commentEntity) {
         if ( commentEntity == null ) {
             return null;
         }
@@ -55,10 +56,10 @@ public class CommentMapperImpl implements CommentMapper {
         if ( user == null ) {
             return null;
         }
-        String userEmail = user.getUserEmail();
-        if ( userEmail == null ) {
+        String email = user.getEmail();
+        if ( email == null ) {
             return null;
         }
-        return userEmail;
+        return email;
     }
 }

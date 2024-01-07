@@ -18,4 +18,6 @@ public class RolesEntity {
     private Integer roleId;
     @Column(name="role_name", length = 30)
     private String roleName;
+
+
 }

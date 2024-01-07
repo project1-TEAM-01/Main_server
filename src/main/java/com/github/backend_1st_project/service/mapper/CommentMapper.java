@@ -10,8 +10,9 @@ import org.mapstruct.factory.Mappers;
 public interface CommentMapper{
     CommentMapper INSTANCE = Mappers.getMapper(CommentMapper.class);
 
+    @Mapping(target = "id", source = "comment_id")
     @Mapping(target = "postId", source = "post.postId")
     @Mapping(target = "content", source = "content")
-    @Mapping(target = "author", source = "user.userEmail")
+    @Mapping(target = "author", source = "user.email")
     CommentDTO entityToDTO(CommentEntity commentEntity);
 }

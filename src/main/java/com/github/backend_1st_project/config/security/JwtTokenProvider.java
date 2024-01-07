@@ -21,61 +21,51 @@ import java.util.List;
 @RequiredArgsConstructor
 public class JwtTokenProvider {
 
-    @Value("${jwt.secret-key-source}")
-    private String secretKeySource;
-    private String secretKey;
+    private final String secretKey = Base64.getEncoder()
+            .encodeToString("project1".getBytes());
 
-    @PostConstruct
-    public void setUp(){
-        secretKey = Base64.getEncoder()
-                .encodeToString(secretKeySource.getBytes());
-    }
-
-    private long tokenValidMillisecond = 1000L * 60 * 60; // 1시간
+    private long tokenValidMillisecond = 1000L*60*60;
 
     private final UserDetailsService userDetailsService;
 
-    public String resolveToken(HttpServletRequest request) {
-        return request.getHeader("X-AUTH-TOKEN");
+    // request Header에 따로 필드를 만들 수도 있지만, 기본적으로 request Header에서 Authorization이 존재
+    public String resolveToken(HttpServletRequest request){
+        return request.getHeader("Authorization");
     }
 
-    public String createToken(String email, List<String> roles) {
-        Claims claims = Jwts.claims()
-                .setSubject(email);
-        claims.put("roles", roles);
+    public String createToken(String email, List<String> roles){
+        Claims claims = Jwts.claims().setSubject(email);
+        claims.put("roles",roles);
         Date now = new Date();
         return Jwts.builder()
                 .setClaims(claims)
                 .setIssuedAt(now)
-                .setExpiration(new Date(now.getTime() + tokenValidMillisecond))
-                .signWith(SignatureAlgorithm.HS256, secretKey)
+                .setExpiration(new Date(now.getTime()+tokenValidMillisecond))
+                .signWith(SignatureAlgorithm.HS256,secretKey)
                 .compact();
     }
 
-    public boolean validateToken(String jwtToken) {
-        try {
-            Claims claims = Jwts.parser()
-                    .setSigningKey(secretKey)
-                    .parseClaimsJws(jwtToken)
-                    .getBody();
+    public boolean validateToken(String jwtToken){
+        try{
+            Claims claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(jwtToken).getBody();
             Date now = new Date();
-            return claims.getExpiration()
-                    .after(now);
-        } catch (Exception e) {
+            return claims.getExpiration().after(now);
+        } catch (Exception e){
             return false;
         }
     }
 
-    public Authentication getAuthentication(String jwtToken) {
-        UserDetails userDetails = userDetailsService.loadUserByUsername(getUserEmail(jwtToken));
-        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
+    public boolean nullifyToken(String jwtToken){
+        Jwts.parser().setSigningKey(secretKey).parseClaimsJws(jwtToken).getBody().setSubject("nullToken");
+        return true;
     }
 
-    private String getUserEmail(String jwtToken) {
-        return Jwts.parser()
-                .setSigningKey(secretKey)
-                .parseClaimsJws(jwtToken)
-                .getBody()
-                .getSubject();
+    public Authentication getAuthentication(String jwtToken){
+        UserDetails userDetails = userDetailsService.loadUserByUsername(getUserEmail(jwtToken));
+        return new UsernamePasswordAuthenticationToken(userDetails,"",userDetails.getAuthorities());
+    }
+
+    private String getUserEmail(String jwtToken){
+        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(jwtToken).getBody().getSubject();
     }
 }

@@ -8,7 +8,7 @@ import javax.annotation.processing.Generated;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-01-06T03:05:29+0900",
+    date = "2024-01-07T11:03:49+0900",
     comments = "version: 1.5.3.Final, compiler: IncrementalProcessingEnvironment from gradle-language-java-8.5.jar, environment: Java 17.0.9 (Oracle Corporation)"
 )
 public class PostMapperImpl implements PostMapper {
@@ -23,7 +23,7 @@ public class PostMapperImpl implements PostMapper {
 
         postsDTO.setPostId( postEntity.getPostId() );
         postsDTO.setTitle( postEntity.getTitle() );
-        postsDTO.setAuthor( postEntityUserUserEmail( postEntity ) );
+        postsDTO.setAuthor( postEntityUserEmail( postEntity ) );
         postsDTO.setViewCount( postEntity.getViewCount() );
         postsDTO.setLikeCount( postEntity.getLikeCount() );
         if ( postEntity.getCreatedAt() != null ) {
@@ -34,7 +34,7 @@ public class PostMapperImpl implements PostMapper {
         return postsDTO;
     }
 
-    private String postEntityUserUserEmail(PostEntity postEntity) {
+    private String postEntityUserEmail(PostEntity postEntity) {
         if ( postEntity == null ) {
             return null;
         }
@@ -42,10 +42,10 @@ public class PostMapperImpl implements PostMapper {
         if ( user == null ) {
             return null;
         }
-        String userEmail = user.getUserEmail();
-        if ( userEmail == null ) {
+        String email = user.getEmail();
+        if ( email == null ) {
             return null;
         }
-        return userEmail;
+        return email;
     }
 }

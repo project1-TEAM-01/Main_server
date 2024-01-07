@@ -13,7 +13,7 @@ public interface PostMapper {
 
     @Mapping(target = "postId", source = "postId")
     @Mapping(target = "title", source = "title")
-    @Mapping(target = "author", source = "user.userEmail")
+    @Mapping(target = "author", source = "user.email")
     @Mapping(target = "viewCount", source = "viewCount")
     @Mapping(target = "likeCount", source = "likeCount")
     @Mapping(target = "createdAt", source = "createdAt")

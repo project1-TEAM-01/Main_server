@@ -22,12 +22,12 @@ public class CustomUserDetailService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        UserEntity users = userJpaRepository.findByUserEquals(email);
+        UserEntity users = userJpaRepository.findByEmailEquals(email);
 
         return CustomUserDetails.builder()
                 .userId(users.getUserId())
-                .email(users.getUserEmail())
-                .password(users.getUserPwd())
+                .email(users.getEmail())
+                .password(users.getPassword())
                 .authorities(users.getUserRoleList().stream()
                         .map(UserRoleEntity::getRole)
                         .map(RolesEntity::getRoleName)
