@@ -12,7 +12,7 @@ public interface PostsJpaRepository extends JpaRepository<PostEntity, Integer> {
 
     @Query("SELECT c FROM PostEntity c " +
             "INNER JOIN c.user u " +
-            "WHERE u.userEmail = :userEmail")
+            "WHERE u.email = :userEmail")
     List<PostEntity> findByUserEmail(String userEmail);
 
     PostEntity findByPostId(Integer postId);

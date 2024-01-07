@@ -1,5 +1,6 @@
 package com.github.backend_1st_project.service;
 
+import com.github.backend_1st_project.repository.userDetails.CustomUserDetails;
 import com.github.backend_1st_project.repository.users.UsersJpaRepository;
 import com.github.backend_1st_project.service.exception.NotFoundException;
 import com.github.backend_1st_project.web.entity.PostEntity;
@@ -25,8 +26,8 @@ public class PostService {
 
     private final PostsJpaRepository postsJpaRepository;
     private final UsersJpaRepository usersJpaRepository;
-    @PersistenceContext(type = PersistenceContextType.EXTENDED)
-    private EntityManager em;
+//    @PersistenceContext(type = PersistenceContextType.EXTENDED)
+//    private EntityManager em;
 
     public List<PostsDTO> findAllPost() {
         List<PostEntity> posts = postsJpaRepository.findAll();
@@ -35,8 +36,12 @@ public class PostService {
     }
 
     @Transactional
-    public String savePost(PostBody body) {
-        UserEntity user = usersJpaRepository.findByUserEmail(body.getAuthor());
+    public String savePost(PostBody body, CustomUserDetails customUserDetails) {
+        if(customUserDetails.equals(body.getAuthor()))
+            throw new NotFoundException("유저가 다릅니다.");
+
+        UserEntity user = usersJpaRepository.findByEmailEquals(customUserDetails.getEmail());
+
         if(user == null)
             throw new NotFoundException("존재하지 않은 유저입니다.");
         PostEntity posts = new PostEntity(body.getTitle(), body.getContent(), user, LocalDateTime.now(), LocalDateTime.now());

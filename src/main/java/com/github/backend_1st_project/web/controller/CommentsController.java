@@ -1,6 +1,7 @@
 package com.github.backend_1st_project.web.controller;
 
 import com.github.backend_1st_project.models.ResponseModel;
+import com.github.backend_1st_project.repository.userDetails.CustomUserDetails;
 import com.github.backend_1st_project.service.CommentService;
 import com.github.backend_1st_project.web.dto.ResultResponse;
 import com.github.backend_1st_project.web.dto.comments.CommentBody;
@@ -10,6 +11,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,8 +33,11 @@ public class CommentsController {
 
     @ApiOperation(value="댓글 추가", notes="게시판의 댓글을 추가한다.")
     @PostMapping("/comments")
-    public ResponseModel registerComment(@RequestBody CommentBody body){
-        String result = commentService.saveComment(body);
+    public ResponseModel registerComment(
+            @RequestBody CommentBody body,
+            @AuthenticationPrincipal CustomUserDetails customUserDetails
+    ){
+        String result = commentService.saveComment(body, customUserDetails);
         return new ResponseModel(result);
     }
 

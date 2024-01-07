@@ -8,7 +8,12 @@ import java.util.List;
 
 @Repository
 public interface UsersJpaRepository extends JpaRepository<UserEntity, Integer> {
-    @Query("SELECT c FROM UserEntity c WHERE c.userEmail = :userEmail")
-    List<UserEntity> findByEmail(String userEmail);
-    UserEntity findByUserEmail(String userEmail);
+    @Query("SELECT c FROM UserEntity c WHERE c.email = :email")
+    List<UserEntity> findByEmail(String email);
+//    UserEntity findByUserEmail(String email);
+
+    @Query("SELECT c FROM UserEntity c WHERE c.email = :email")
+    UserEntity findByEmailEquals(String email);
+
+    boolean existsByEmail(String email);
 }

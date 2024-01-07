@@ -2,6 +2,7 @@ package com.github.backend_1st_project.service;
 
 import com.github.backend_1st_project.repository.comments.CommentsJpaRepository;
 import com.github.backend_1st_project.repository.posts.PostsJpaRepository;
+import com.github.backend_1st_project.repository.userDetails.CustomUserDetails;
 import com.github.backend_1st_project.repository.users.UsersJpaRepository;
 import com.github.backend_1st_project.service.exception.NotFoundException;
 import com.github.backend_1st_project.service.mapper.CommentMapper;
@@ -33,8 +34,10 @@ public class CommentService {
     }
 
     @Transactional
-    public String saveComment(CommentBody body){
-        UserEntity user = usersJpaRepository.findByUserEmail(body.getAuthor());
+    public String saveComment(CommentBody body, CustomUserDetails customUserDetails){
+        if(customUserDetails.equals(body.getAuthor()))
+            throw new NotFoundException("유저가 다릅니다.");
+        UserEntity user = usersJpaRepository.findByEmailEquals(customUserDetails.getEmail());
         PostEntity post = postsJpaRepository.findByPostId(body.getPostId());
         if(user == null)
             throw new NotFoundException("존재하지 않은 유저입니다.");
