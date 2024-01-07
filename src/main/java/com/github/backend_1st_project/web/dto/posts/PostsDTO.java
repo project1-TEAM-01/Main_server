@@ -11,11 +11,11 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class PostsDTO {
-    private String postId;
-    private String userId;
+    private Integer postId;
     private String title;
+    private String content;
+    private String author;
     private Integer viewCount;
     private Integer likeCount;
     private String createdAt;
-    private String updatedAt;
 }

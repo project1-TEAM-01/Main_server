@@ -1,8 +1,7 @@
-package com.github.backend_1st_project.web.dto.entity;
+package com.github.backend_1st_project.web.entity;
 
 
 import com.github.backend_1st_project.web.dto.comments.CommentBody;
-import com.github.backend_1st_project.web.dto.posts.PostBody;
 import lombok.*;
 
 import javax.persistence.*;
@@ -20,25 +19,32 @@ import java.time.LocalDateTime;
 public class CommentEntity extends TimeEntity {
     @Id
     @Column(name = "comment_id") @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer commentId;
-    @Column(name = "post_id")
-    private Integer postId;
-    @Column(name = "user_id")
-    private String userId;
+    private Integer comment_id;
+
+    @ManyToOne
+    @JoinColumn(name = "post_id")
+    private PostEntity post;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private UserEntity user;
+
     @Column(name = "content")
     private String content;
 
-    public CommentEntity(Integer commendId, Integer postId, String userId, String content, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    @Column(name = "like_count")
+    private Integer likeCount;
+
+    public CommentEntity(String content, PostEntity post, UserEntity user, LocalDateTime createdAt, LocalDateTime updatedAt) {
         super(createdAt, updatedAt);
-        this.commentId = commentId;
-        this.postId = postId;
-        this.userId = userId;
         this.content = content;
+        this.post = post;
+        this.user = user;
+        this.likeCount = 0;
     }
 
     public void setCommentBody(CommentBody postBody){
         this.content = postBody.getContent();
-        this.userId = postBody.getUserId();
         this.setUpdatedAt(LocalDateTime.now());
     }
 

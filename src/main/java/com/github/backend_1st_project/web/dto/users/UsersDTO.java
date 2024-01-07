@@ -6,14 +6,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 @Getter
 @Setter
 @NoArgsConstructor
 public class UsersDTO {
-    private String userId;
-    private String userName;
-    private String userAddress;
-    private String createdAt;
-    private String updatedAt;
+    private String email;
+    private LocalDateTime createdAt;
 }
