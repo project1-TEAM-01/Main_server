@@ -53,23 +53,4 @@ public class UsersController {
         String result = userService.logout(request);
         return new ResponseModel(result);
     }
-
-
-
-    @GetMapping("/users")
-    @ApiOperation(value="유저 정보 전체 조회", notes="유저 정보를 전체조회")
-    public ResultResponse findAllUser(){
-        List<LoginDTO> users = userService.findAllUser();
-        return new ResultResponse(users);
-    }
-
-    @GetMapping("/users/{userEmail}")
-    @ApiOperation(value="유저 정보 조회", notes="특정 유저 정보를 조회")
-    @ApiImplicitParam(name = "userEmail", value = "현재 등록된 유저 id")
-    public ResultResponse findByUserId(@PathVariable String userEmail){
-        List<LoginDTO> users = userService.findByUser(userEmail);
-        return new ResultResponse(users);
-    }
-
-
 }
