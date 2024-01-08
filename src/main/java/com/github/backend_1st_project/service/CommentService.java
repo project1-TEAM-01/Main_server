@@ -28,7 +28,7 @@ public class CommentService {
     public List<CommentDTO> findPostByComments(Integer postId) {
         List<CommentEntity> comments = commentsJpaRepository.findByPostId(postId);
         if(comments.isEmpty())
-            throw new NotFoundException("존재하지 않는 댓글입니다.");
+            throw new NotFoundException("댓글이 존재하지 않습니다.");
         List<CommentDTO> dto = comments.stream().map(CommentMapper.INSTANCE::entityToDTO).collect(Collectors.toList());
         return dto;
     }
@@ -49,12 +49,16 @@ public class CommentService {
     @Transactional
     public String updateComment(Integer commentId, CommentBody body) {
         CommentEntity comments = commentsJpaRepository.findById(commentId).orElseThrow(() -> new NotFoundException("해당 댓글이 존재하지 않습니다."));
+        UserEntity user = usersJpaRepository.findByEmailEquals(body.getAuthor());
+        if(user == null)
+          throw new NotFoundException("작성자 변경은 불가입니다.");
         comments.setCommentBody(body);
         return "댓글이 성공적으로 수정되었습니다.";
     }
 
     @Transactional
     public String deleteComment(Integer commentId) {
+        commentsJpaRepository.findById(commentId).orElseThrow(() -> new NotFoundException("해당 댓글은 이미 존재하지 않습니다."));
         commentsJpaRepository.deleteById(commentId);
         return "댓글이 성공적으로 삭제되었습니다.";
     }

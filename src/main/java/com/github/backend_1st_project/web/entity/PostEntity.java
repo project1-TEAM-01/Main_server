@@ -65,4 +65,8 @@ public class PostEntity extends TimeEntity {
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
     }
+
+    public void decreaseLikeCount(){
+      this.likeCount--;
+    }
 }
