@@ -16,6 +16,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.Arrays;
 import java.util.List;
@@ -47,7 +48,7 @@ public class PostsController {
     @PostMapping("")
     public ResponseModel registerPost(
             @RequestBody PostBody body,
-            @AuthenticationPrincipal CustomUserDetails customUserDetails
+            @ApiIgnore @AuthenticationPrincipal CustomUserDetails customUserDetails
     ){
         String posts = postService.savePost(body, customUserDetails);
         return new ResponseModel(posts);
@@ -64,6 +65,22 @@ public class PostsController {
     @DeleteMapping("/{postId}")
     public ResponseModel deleteItemByPathId(@PathVariable("postId") Integer postId){
         String result = postService.deletePosts(postId);
+        return new ResponseModel(result);
+    }
+
+    @ApiOperation(value="게시판 글 좋아요", notes="유저가 쓴 게시물을 좋아요한다.")
+    @PostMapping("/likes/{postId}")
+    public ResponseModel LikeItemByPathId(@PathVariable("postId") Integer postId,
+                                          @ApiIgnore @AuthenticationPrincipal CustomUserDetails customUserDetails){
+        String result = postService.likePosts(postId,customUserDetails);
+        return new ResponseModel(result);
+    }
+
+    @ApiOperation(value="게시판 글 좋아요 취소", notes="좋아요한 게시물을 취소한다.")
+    @DeleteMapping("/deleteLikes/{postId}")
+    public ResponseModel DeleteLikeByPathId(@PathVariable("postId") Integer postId,
+                                            @ApiIgnore @AuthenticationPrincipal CustomUserDetails customUserDetails){
+        String result = postService.deleteLikePosts(postId,customUserDetails);
         return new ResponseModel(result);
     }
 

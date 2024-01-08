@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.List;
 
@@ -35,7 +36,7 @@ public class CommentsController {
     @PostMapping("/comments")
     public ResponseModel registerComment(
             @RequestBody CommentBody body,
-            @AuthenticationPrincipal CustomUserDetails customUserDetails
+            @ApiIgnore @AuthenticationPrincipal CustomUserDetails customUserDetails
     ){
         String result = commentService.saveComment(body, customUserDetails);
         return new ResponseModel(result);

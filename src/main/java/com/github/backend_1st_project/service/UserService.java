@@ -84,27 +84,4 @@ public class UserService {
         }
         return "로그아웃이 성공적으로 완료 되었습니다!";
     }
-
-
-    public List<LoginDTO> findByUser(String userEmail) {
-        List<UserEntity> userEntity = usersJpaRepository.findByEmail(userEmail);
-        if(userEntity.isEmpty())
-            throw new NotFoundException("해당 ID: " + userEmail + "를 찾을 수 없습니다.");
-        List<LoginDTO> userDto = userEntity.stream().map(UserMapper.INSTANCE::entityToDTO).collect(Collectors.toList());
-        return userDto;
-    }
-
-    public List<LoginDTO> findAllUser() {
-        List<UserEntity> userEntity = usersJpaRepository.findAll(Sort.by(Sort.Direction.DESC, "userId"));
-        List<LoginDTO> userDto = userEntity.stream().map(UserMapper.INSTANCE::entityToDTO).collect(Collectors.toList());
-        return userDto;
-    }
-
-    public String saveUser(RequestUser userBody) {
-        UserEntity userEntity = usersJpaRepository.findByEmailEquals(userBody.getEmail());
-        if(userEntity != null)
-            throw new NotFoundException("해당 ID: " + userEntity.getEmail() + "는 이미 존재합니다.");
-
-        return "회원가입이 완료되었습니다.";
-    }
 }
