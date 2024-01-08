@@ -12,6 +12,7 @@ import com.github.backend_1st_project.web.entity.UserEntity;
 import com.github.backend_1st_project.web.dto.posts.PostBody;
 import com.github.backend_1st_project.web.dto.posts.PostsDTO;
 import lombok.RequiredArgsConstructor;
+import org.apache.catalina.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -51,13 +52,16 @@ public class PostService {
     @Transactional
     public String updatePosts(Integer postId, PostBody postBody) {
         PostEntity postEntity = postsJpaRepository.findById(postId).orElseThrow(() -> new NotFoundException("해당 게시물이 존재하지 않습니다."));
+        UserEntity user = usersJpaRepository.findByEmailEquals(postBody.getAuthor());
+        if(user == null)
+          throw new NotFoundException("작성자 변경은 불가입니다.");
         postEntity.setPostBody(postBody);
         return "게시물 업데이트가 완료되었습니다.";
     }
 
     @Transactional
     public String deletePosts(Integer postId) {
-        PostEntity postEntity = postsJpaRepository.findById(postId).orElseThrow(() -> new NotFoundException("해당 게시물은 이미 존재하지 않습니다."));
+        postsJpaRepository.findById(postId).orElseThrow(() -> new NotFoundException("해당 게시물은 이미 존재하지 않습니다."));
         postsJpaRepository.deleteById(postId);
         return "해당 게시물이 삭제되었습니다.";
     }
@@ -73,6 +77,8 @@ public class PostService {
     @Transactional
     public String likePosts(Integer postId, CustomUserDetails customUserDetails) {
         PostEntity post = postsJpaRepository.findByPostId(postId);
+        if(post == null)
+          throw new NotFoundException("삭제된 게시물입니다.");
         String userEmail = customUserDetails.getEmail();
         UserEntity user = usersJpaRepository.findByEmailEquals(userEmail);
         String returnStr = "";
@@ -93,15 +99,16 @@ public class PostService {
     public String deleteLikePosts(Integer postId,CustomUserDetails customUserDetails) {
         String returnstr = "";
         PostEntity post = postsJpaRepository.findByPostId(postId);
+        if(post == null)
+          throw new NotFoundException("삭제된 게시물입니다.");
         UserEntity user = usersJpaRepository.findByEmailEquals(customUserDetails.getEmail());
         List<UserEntity> users = post.getLikesList().stream().map(LikesEntity::getUser).toList();
         boolean alreadyLike = users.contains(user);
         if(alreadyLike){
-            Integer postId2 = post.getPostId();
-            Integer userId2 = user.getUserId();
             LikesEntity likes = likesJpaRepository.findLikesEntityByPostEqualsAndUserEquals(post,user);
             likesJpaRepository.delete(likes);
-            post.setLikeCount(post.getLikeCount()-1);
+            post.decreaseLikeCount();
+            postsJpaRepository.save(post);
             returnstr = "좋아요가 취소되었습니다";
         }
         else{

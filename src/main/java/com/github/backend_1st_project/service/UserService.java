@@ -61,14 +61,15 @@ public class UserService {
     public String login(LoginDTO loginDto) {
         String email = loginDto.getEmail();
         String pwd = loginDto.getPassword();
-
+        UserEntity users = usersJpaRepository.findByEmailEquals(email);
+        if(users == null)
+          throw new NotFoundException("아이디 혹은 비밀번호가 틀렸습니다.");
         try {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(email, pwd)
             );
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
-            UserEntity users = usersJpaRepository.findByEmailEquals(email);
             List<String> roles = users.getUserRoleList().stream().map(UserRoleEntity::getRole).map(RolesEntity::getRoleName).collect(Collectors.toList());
             return jwtTokenProvider.createToken(email, roles);
         } catch (Exception e) {
