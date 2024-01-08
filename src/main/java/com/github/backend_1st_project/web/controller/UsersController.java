@@ -10,6 +10,7 @@ import com.github.backend_1st_project.web.dto.users.LoginDTO;
 import com.github.backend_1st_project.web.dto.users.SignupDTO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,7 +28,6 @@ import java.util.List;
 public class UsersController {
 
     private final UserService userService;
-    private final JwtTokenProvider jwtTokenProvider;
 
     @ApiOperation("이메일 비밀번호 입력하여 회원 가입 API")
     @PostMapping("/signup")
@@ -37,7 +37,9 @@ public class UsersController {
     }
 
     @ApiOperation("이메일 비밀번호 입력하여 접속하는 api")
-    @PostMapping("/login")
+    @PostMapping(value = "/login", headers = {
+        "Content-type=application/json"
+    })
     public ResponseModel loginSuccess(@RequestBody LoginDTO loginDto, HttpServletResponse httpServletResponse){
         String token = userService.login(loginDto);
         httpServletResponse.setHeader("Authorization",token);

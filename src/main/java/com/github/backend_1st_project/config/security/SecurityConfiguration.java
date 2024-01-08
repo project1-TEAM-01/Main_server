@@ -19,6 +19,17 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfiguration {
 
     private final JwtTokenProvider jwtTokenProvider;
+    private String[] permitUrl = {
+        "/resources/static/**","/api/signup","/api/login"
+    };
+    private String[] checkUrl = {
+        "/api/comments",
+        "/api/comments/*",
+        "/api/posts",
+        "/api/posts/*",
+        "/api/posts/likes",
+        "/api/logout"
+    };
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
         http.headers().frameOptions().sameOrigin().and()
@@ -28,8 +39,8 @@ public class SecurityConfiguration {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/resources/static/**","/api/signup","/api/login").permitAll()
-                .antMatchers("/api/comments","/api/comments/*","/api/posts","/api/posts/*","/api/posts/likes","/api/logout").hasAnyAuthority("admin","user")
+                .antMatchers(permitUrl).permitAll()
+                .antMatchers(checkUrl).hasAnyAuthority("admin","user")
                 .and()
                 .exceptionHandling()
                 .authenticationEntryPoint(new CustomAuthenticationEntryPoint())
