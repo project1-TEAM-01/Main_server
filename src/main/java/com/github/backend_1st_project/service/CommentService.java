@@ -35,8 +35,6 @@ public class CommentService {
 
     @Transactional
     public String saveComment(CommentBody body, CustomUserDetails customUserDetails){
-        if(customUserDetails.equals(body.getAuthor()))
-            throw new NotFoundException("유저가 다릅니다.");
         UserEntity user = usersJpaRepository.findByEmailEquals(customUserDetails.getEmail());
         PostEntity post = postsJpaRepository.findByPostId(body.getPostId());
         if(user == null)

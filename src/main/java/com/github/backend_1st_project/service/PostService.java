@@ -26,8 +26,6 @@ public class PostService {
 
     private final PostsJpaRepository postsJpaRepository;
     private final UsersJpaRepository usersJpaRepository;
-//    @PersistenceContext(type = PersistenceContextType.EXTENDED)
-//    private EntityManager em;
 
     public List<PostsDTO> findAllPost() {
         List<PostEntity> posts = postsJpaRepository.findAll();
@@ -37,8 +35,6 @@ public class PostService {
 
     @Transactional
     public String savePost(PostBody body, CustomUserDetails customUserDetails) {
-        if(customUserDetails.equals(body.getAuthor()))
-            throw new NotFoundException("유저가 다릅니다.");
 
         UserEntity user = usersJpaRepository.findByEmailEquals(customUserDetails.getEmail());
 
