@@ -1,8 +1,10 @@
 package com.github.backend_1st_project.service;
 
+import com.github.backend_1st_project.repository.Likes.LikesJpaRepository;
 import com.github.backend_1st_project.repository.userDetails.CustomUserDetails;
 import com.github.backend_1st_project.repository.users.UsersJpaRepository;
 import com.github.backend_1st_project.service.exception.NotFoundException;
+import com.github.backend_1st_project.web.entity.LikesEntity;
 import com.github.backend_1st_project.web.entity.PostEntity;
 import com.github.backend_1st_project.repository.posts.PostsJpaRepository;
 import com.github.backend_1st_project.service.mapper.PostMapper;
@@ -26,6 +28,7 @@ public class PostService {
 
     private final PostsJpaRepository postsJpaRepository;
     private final UsersJpaRepository usersJpaRepository;
+    private final LikesJpaRepository likesJpaRepository;
 
     public List<PostsDTO> findAllPost() {
         List<PostEntity> posts = postsJpaRepository.findAll();
@@ -65,5 +68,45 @@ public class PostService {
             throw new NotFoundException("해당 Email: " + userEmail + "의 게시물을 찾을 수 없습니다.");
         List<PostsDTO> dto = posts.stream().map(PostMapper.INSTANCE::entityToDTO).collect(Collectors.toList());
         return dto;
+    }
+
+    @Transactional
+    public String likePosts(Integer postId, CustomUserDetails customUserDetails) {
+        PostEntity post = postsJpaRepository.findByPostId(postId);
+        String userEmail = customUserDetails.getEmail();
+        UserEntity user = usersJpaRepository.findByEmailEquals(userEmail);
+        String returnStr = "";
+        if(likesJpaRepository.existsByUserEqualsAndPostEquals(user,post)){
+            returnStr = "이미 좋아요한 게시물입니다.";
+        }
+        else{
+            LikesEntity likes = LikesEntity.builder().user(user).post(post).createdAt(LocalDateTime.now()).build();
+            likesJpaRepository.save(likes);
+            post.setLikeCount(1);
+            postsJpaRepository.save(post);
+            returnStr = "해당 게시물을 좋아요 했습니다";
+        }
+        return returnStr;
+    }
+
+    @Transactional
+    public String deleteLikePosts(Integer postId,CustomUserDetails customUserDetails) {
+        String returnstr = "";
+        PostEntity post = postsJpaRepository.findByPostId(postId);
+        UserEntity user = usersJpaRepository.findByEmailEquals(customUserDetails.getEmail());
+        List<UserEntity> users = post.getLikesList().stream().map(LikesEntity::getUser).toList();
+        boolean alreadyLike = users.contains(user);
+        if(alreadyLike){
+            Integer postId2 = post.getPostId();
+            Integer userId2 = user.getUserId();
+            LikesEntity likes = likesJpaRepository.findLikesEntityByPostEqualsAndUserEquals(post,user);
+            likesJpaRepository.delete(likes);
+            post.setLikeCount(post.getLikeCount()-1);
+            returnstr = "좋아요가 취소되었습니다";
+        }
+        else{
+            returnstr = "취소할 좋아요가 없습니다.";
+        }
+        return returnstr;
     }
 }
