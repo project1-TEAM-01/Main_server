@@ -4,12 +4,14 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Base64;
 import java.util.Date;
@@ -25,8 +27,10 @@ public class JwtTokenProvider {
     private long tokenValidMillisecond = 1000L*60*60;
 
     private final UserDetailsService userDetailsService;
+
+    // request Header에 따로 필드를 만들 수도 있지만, 기본적으로 request Header에서 Authorization이 존재
     public String resolveToken(HttpServletRequest request){
-        return request.getHeader("X-AUTH-TOKEN");
+        return request.getHeader("Authorization");
     }
 
     public String createToken(String email, List<String> roles){
@@ -51,6 +55,11 @@ public class JwtTokenProvider {
         }
     }
 
+    public boolean nullifyToken(String jwtToken){
+        Jwts.parser().setSigningKey(secretKey).parseClaimsJws(jwtToken).getBody().setSubject("nullToken");
+        return true;
+    }
+
     public Authentication getAuthentication(String jwtToken){
         UserDetails userDetails = userDetailsService.loadUserByUsername(getUserEmail(jwtToken));
         return new UsernamePasswordAuthenticationToken(userDetails,"",userDetails.getAuthorities());
@@ -59,5 +68,4 @@ public class JwtTokenProvider {
     private String getUserEmail(String jwtToken){
         return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(jwtToken).getBody().getSubject();
     }
-
 }
