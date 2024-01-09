@@ -1,4 +1,4 @@
-package com.github.backend_1st_project.web.dto.entity;
+package com.github.backend_1st_project.web.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

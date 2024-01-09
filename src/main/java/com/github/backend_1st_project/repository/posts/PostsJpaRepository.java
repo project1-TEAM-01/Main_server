@@ -1,14 +1,19 @@
 package com.github.backend_1st_project.repository.posts;
 
-import com.github.backend_1st_project.web.dto.entity.PostEntity;
+import com.github.backend_1st_project.web.entity.PostEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public interface PostsJpaRepository extends JpaRepository<PostEntity, Integer> {
 
-    List<PostEntity> findByUserId(String userId);
+    @Query("SELECT c FROM PostEntity c " +
+            "INNER JOIN c.user u " +
+            "WHERE u.email = :userEmail")
+    List<PostEntity> findByUserEmail(String userEmail);
+
+    PostEntity findByPostId(Integer postId);
 }
